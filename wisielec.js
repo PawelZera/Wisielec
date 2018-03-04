@@ -1,143 +1,165 @@
-var pytania= new Array(20);{
-    pytania [0] = "javascript";
-    pytania [1] = "to rozumem";
-    pytania [2] = "a mądrcy je rozwiązują";
-    pytania [3] = "binarny";
-    pytania [4] = "fotorealizm";
-    pytania [5] = "tym się mądry wzbogaci";
-    pytania [6] = "iżby mniej mówiono a więcej słuchano";
-    pytania [7] = "tym wyżej głowę nosi";
-    pytania [8] = "mało mleka daje";
-    pytania [9] = "a powróci wołem";
+var answer= new Array(9);{
+    answer [0] = "javascript";
+    answer [1] = "to rozumem";
+    answer [2] = "a mądrcy je rozwiązują";
+    answer [3] = "binarny";
+    answer [4] = "fotorealizm";
+    answer [5] = "tym się mądry wzbogaci";
+    answer [6] = "iżby mniej mówiono a więcej słuchano";
+    answer [7] = "tym wyżej głowę nosi";
+    answer [8] = "mało mleka daje";
+    answer [9] = "a powróci wołem";
 }
-var podpowiedzi = new Array(20); {
-    podpowiedzi [0] = "Napisana w tym gra";
-    podpowiedzi [1] = "Co nie siłą, ...";
-    podpowiedzi [2] = "Głupcy wiążą węzły, ...";
-    podpowiedzi [3] = "Najczęściej wykorzystywany system liczbowy w elektronice cyfrowej";
-    podpowiedzi [4] = "Grafika wyglądająca niemal całkowicie realistycznie";
-    podpowiedzi [5] = "Co głupi straci, ...";
-    podpowiedzi [6] = "Dlatego dwie uszy, jeden język dano, ...";
-    podpowiedzi [7] = "Im kto mniej wart, ...";
-    podpowiedzi [8] = "Krowa, która dużo ryczy";
-    podpowiedzi [9] = "Plotka wyleci wróblem, ...";
+var prompt = new Array(9); {
+    prompt [0] = "Napisana jest w tym gra";
+    prompt [1] = "Co nie siłą, ";
+    prompt [2] = "Głupcy wiążą węzły, ";
+    prompt [3] = "Najczęściej wykorzystywany system liczbowy w elektronice cyfrowej";
+    prompt [4] = "Grafika wyglądająca niemal całkowicie realistycznie";
+    prompt [5] = "Co głupi straci, ";
+    prompt [6] = "Dlatego dwie uszy, jeden język dano, ";
+    prompt [7] = "Im kto mniej wart, ";
+    prompt [8] = "Krowa, która dużo ryczy, ";
+    prompt [9] = "Plotka wyleci wróblem, ";
 }
-var nr_pytania= Math.floor(Math.random()*10);
-var pytanie = pytania[nr_pytania];
-var haslo=pytanie;
-haslo=haslo.toUpperCase();
-var podpowiedz=podpowiedzi[nr_pytania];
-var haslo1="";
-var dlugosc=haslo.length;
-var ile_skuch=0;
+var letters= new Array(35);{
+    letters [0] = "A";
+    letters [1] = "Ą";
+    letters [2] = "B";
+    letters [3] = "C";
+    letters [4] = "Ć";
+    letters [5] = "D";
+    letters [6] = "E";
+    letters [7] = "Ę";
+    letters [8] = "F";
+    letters [9] = "G";
+    letters [10] = "H";
+    letters [11] = "I";
+    letters [12] = "J";
+    letters [13] = "K";
+    letters [14] = "L";
+    letters [15] = "Ł";
+    letters [16] = "M";
+    letters [17] = "N";
+    letters [18] = "Ń";
+    letters [19] = "O";
+    letters [20] = "Ó";
+    letters [21] = "P";
+    letters [22] = "Q";
+    letters [23] = "R";
+    letters [24] = "S";
+    letters [25] = "Ś";
+    letters [26] = "T";
+    letters [27] = "U";
+    letters [28] = "V";
+    letters [29] = "W";
+    letters [30] = "X";
+    letters [31] = "Y";
+    letters [32] = "Z";
+    letters [33] = "Ż";
+    letters [34] = "Ź";
+}
+var questionNo,drawnAnswer,password,passLength,mistakes,drawnPrompt,guess;
+var password1="";
 var yes = new Audio("yes.wav");
 var no = new Audio("no.wav");
 var fail = new Audio("fail.wav");
 var win = new Audio("win.wav");
 
-window.onload=start;
-String.prototype.ustawZnak = function(miejsce,znak) {
-    if (miejsce> this.length-1) return this.toString();
-    else return this.substr(0, miejsce)+znak+this.substr(miejsce+1);
-}
+$(document).ready(startGame);
 
-for (i=0; i<dlugosc; i++){
-    if (haslo.charAt(i)==" ") haslo1=haslo1+" ";
-    else haslo1 = haslo1+"_";
+function newPassword() {
+    questionNo= Math.floor(Math.random()*10);
+    drawnAnswer = answer [questionNo];
+    password=drawnAnswer;
+    password=password.toUpperCase();
+    password1="";
+    passLength = password.length;
+    drawnPrompt=prompt[questionNo];
+    hidePassword();
 }
-
-function wypisz_haslo() {
-    document.getElementById("plansza").innerHTML=haslo1;
-    document.getElementById("podpowiedz").innerHTML=podpowiedz;
-}
-function start() {
-    var tresc_diva="";
-    for (i=0; i<=34;i++){
-        var element="lit"+i;
-        tresc_diva = tresc_diva + '<div class="litera" onclick="sprawdz('+i+')" id="'+element+'">'+litery[i]+'</div>';
-        if ( (i+1)%7==0) tresc_diva = tresc_diva + '<div style="clear:both;"</div>';
+function hidePassword() {
+    for (i=0; i<passLength; i++){
+        if (password.charAt(i)==" ") password1+=" ";
+        else password1+="_";
     }
-    document.getElementById("alfabet").innerHTML = tresc_diva;
-    wypisz_haslo();
 }
-function sprawdz(nr) {
-    var trafiona = false;
-
-    for (i=0; i<dlugosc; i++){
-        if (haslo.charAt(i) == litery[nr]){
-            haslo1 = haslo1.ustawZnak(i,litery[nr]);
-            trafiona=true;
-        }
-    }
-    if(trafiona==true) {
-        var element="lit"+nr;
-        document.getElementById(element).style.background="#003300";
-        document.getElementById(element).style.color="#00C000";
-        document.getElementById(element).style.border=" 3px solid #00C000";
-        document.getElementById(element).style.cursor="default";
-        yes.play();
-        wypisz_haslo();
-
+function writePassword() {
+    $("#board").html(password1);
+    $("#prompt").html(drawnPrompt);
+}
+function startGame() {
+    clearGallows();
+    newPassword();
+    mistakes=0;
+    lettersBox();
+    writePassword();
+    clicked();
+}
+function check(nr) {
+    guess = false;
+    checkLetters(nr);
+    if(guess==true) {
+        hit(nr);
     }
     else{
-        var element="lit"+nr;
-        document.getElementById(element).style.background="#330000";
-        document.getElementById(element).style.color="#C00000";
-        document.getElementById(element).style.border=" 3px solid #C00000";
-        document.getElementById(element).style.cursor="default";
-        document.getElementById(element).setAttribute("onclick",";");
-        no.play();
-
-        ile_skuch++;
-        var obraz = "img/s"+ile_skuch+".jpg";
-        document.getElementById("szubienica").innerHTML = '<img src="'+obraz+'" alt=""/>';
+        mis(nr);
     }
-    if (haslo == haslo1) {
-        document.getElementById("alfabet").innerHTML = "Tak jest! Podano prawidłowe hasło: "+haslo+'<br /><br /><span class="reset"  onclick="location.reload()">JESZCZE RAZ?</span>'
-        win.play();
-    }
-    if (ile_skuch>=9) {
-        document.getElementById("alfabet").innerHTML = "Przegrana! Prawidłowe hasło: "+haslo+'<br /><br /><span class="reset"  onclick="location.reload()">JESZCZE RAZ?</span>'
-    fail.play();
-    }
-
+    checkProgress();
 }
-
-
-var litery= new Array(35);{
-    litery [0] = "A";
-    litery [1] = "Ą";
-    litery [2] = "B";
-    litery [3] = "C";
-    litery [4] = "Ć";
-    litery [5] = "D";
-    litery [6] = "E";
-    litery [7] = "Ę";
-    litery [8] = "F";
-    litery [9] = "G";
-    litery [10] = "H";
-    litery [11] = "I";
-    litery [12] = "J";
-    litery [13] = "K";
-    litery [14] = "L";
-    litery [15] = "Ł";
-    litery [16] = "M";
-    litery [17] = "N";
-    litery [18] = "Ń";
-    litery [19] = "O";
-    litery [20] = "Ó";
-    litery [21] = "P";
-    litery [22] = "Q";
-    litery [23] = "R";
-    litery [24] = "S";
-    litery [25] = "Ś";
-    litery [26] = "T";
-    litery [27] = "U";
-    litery [28] = "V";
-    litery [29] = "W";
-    litery [30] = "X";
-    litery [31] = "Y";
-    litery [32] = "Z";
-    litery [33] = "Ż";
-    litery [34] = "Ź";
+function clicked() {
+    $(document).ready(function () {
+        $(".letter").click(function () {
+            var clicked = this.id;
+            if(clicked!="lock"){
+                check(clicked);
+            }
+        })
+    });
+}
+function lettersBox() {
+    var contentsDiv="";
+    for (i=0; i<=34;i++){
+        contentsDiv+= '<div class="letter" id="'+i+'">'+letters[i]+'</div>';
+    }
+    $("#alphabet").html(contentsDiv);
+}
+function checkProgress() {
+    if (password == password1) {
+        $('#alphabet').html("Tak jest! Podano prawidłowe hasło: "+drawnPrompt+" "+password+'<br /><br /><span class="button"">JESZCZE RAZ?</span>');
+        win.play();
+        $('.button').click(startGame);
+    }
+    if (mistakes>=9) {
+        $('#alphabet').html("Przegrana! Prawidłowe hasło: "+drawnPrompt+" "+password+'<br /><br /><span class="button">JESZCZE RAZ?</span>');
+        fail.play();
+        $('.button').click(startGame);
+    }
+}
+function checkLetters(nr) {
+    String.prototype.setSign = function(number,letter) {
+        if (number> this.passLength-1) return this.toString();
+        else return this.substr(0, number)+letter+this.substr(number+1);
+    }
+    for (i=0; i<passLength; i++){
+        if (password.charAt(i) == letters[nr]){
+            password1 = password1.setSign(i,letters[nr]);
+            guess=true;
+        }
+    }
+}
+function hit(nr) {
+    $("#"+nr).addClass('hit').attr("id","lock");
+    yes.play();
+    writePassword();
+}
+function mis(nr) {
+    $("#"+nr).addClass('mis').attr("id","lock");
+    no.play();
+    mistakes++;
+    var obraz = "img/s"+mistakes+".jpg";
+    $('#gallows').html('<img src="'+obraz+'" alt=""/>');
+}
+function clearGallows() {
+    $("#gallows").html('<img src="img/s0.jpg" alt="">');
 }
