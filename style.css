@@ -4,19 +4,20 @@ body {
     font-size: 28px;
     font-family: 'Inconsolata', monospace;
     font-weight: 700;
+    width:100%;
 }
 #box {
-    width: 900px;
+    min-width: 450px;
+    max-width: 100%;
+    text-align: center;
+}
+#prompt{
+    text-align: center;
+    margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
 }
-#prompt{
-    width: 900px;
-    text-align: center;
-    margin-top: 20px;
-}
 #board {
-    width: 900px;
     margin-top: 20px;
     margin-bottom: 50px;
     text-align: center;
@@ -25,16 +26,18 @@ body {
     letter-spacing: 3px;
 }
 #gallows {
-    float: left;
     width: 450px;
     text-align: center;
     min-height: 280px;
+    margin: 0;
+    display: inline-block;
 }
 #alphabet {
-    float: left;
     width: 392px;
     text-align: center;
     min-height: 280px;
+    display: inline-block;
+    margin: 0;
 }
 .letter {
     width: 30px;
